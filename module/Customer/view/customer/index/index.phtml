@@ -1,0 +1,50 @@
+<h2 class="mb-3">Phone Numbers</h2>
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <select name="cmb-country" id="cmb-country" class="selectpicker form-control">
+            <option value="">Select country</option>
+            <?php if(count($countries) > 0) : ?>
+                <?php foreach($countries as $key => $value) : ?>
+                    <option value="<?= $key ?>"><?= $value ?></option>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </select>
+    </div>
+    <div class="col-md-4 mb-3">
+        <select name="cmb-state" id="cmb-state" class="selectpicker form-control">
+            <option value="">All phone numbers</option>
+            <option value="OK">Only Valid phone numbers</option>
+            <option value="NOK">Invalid phone numbers</option>
+        </select>
+    </div>
+</div>
+<table id="table-phones" class="table">
+    <thead>
+        <th scope="col">Country</th>
+        <th scope="col">State</th>
+        <th scope="col">Country Code</th>
+        <th scope="col">Phone Number</th>
+    </thead>
+    <tbody>
+        <?php if(!isset($phones) || count($phones) == 0) : ?>
+        <tr>
+            <td colspan="5">No phone numbers found!</td>
+        </tr>
+        <?php else : ?>
+            <?php foreach($phones as $p) : ?>
+                <tr>
+                    <td><?= $countries[$p->getCode()]; ?></td>
+                    <td><?= $p->getState(); ?></td>
+                    <td><?= '+'.$p->getCode(); ?></td>
+                    <td><?= $p->getNumber(); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </tbody>
+</table>
+<div class="row">
+    <div class="col-md-12 mb-3 text-center">
+        <a class="btn btn-secondary" role="button" href="">Prev</a>
+        <a class="btn btn-primary" role="button" href="">Next</a>
+    </div>
+</div>

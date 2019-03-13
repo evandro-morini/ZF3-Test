@@ -1,0 +1,57 @@
+<?= $this->doctype() ?>
+
+<html>
+    <head>
+        <title>Phone Numbers</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+		<!-- Le styles -->
+        <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+            ->prependStylesheet($this->basePath('css/style.css'))
+            ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+            ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+        ?>
+
+        <!-- Scripts -->
+        <?= $this->headScript()
+            ->prependFile($this->basePath('js/bootstrap.min.js'))
+            ->prependFile($this->basePath('js/jquery-3.1.0.min.js'))
+        ?>
+		
+        <script type="text/javascript">
+            $(function() {
+                $("#cmb-country, #cmb-state").change(function () {
+                    filterPhoneNumbers();
+                });
+                
+                function filterPhoneNumbers() {
+                    var country = $('#cmb-country option:selected').val();
+                    var state = $('#cmb-state option:selected').val();
+                    
+                    $.ajax({
+                        type: 'POST',
+                        url:  'customer/ajax',
+                        data: { 
+                            country : country,
+                            state   : state
+                        },
+                        async: false,
+                        timeout: 30000,
+                        success: function(html) {
+                            $('#table-phones').html(html);
+                        },
+                        error: function() {
+                            console.log('Ajax request error.');
+                        }
+                    });
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <?= $this->content ?>
+        </div>
+    </body>
+</html>
